@@ -1,0 +1,7 @@
+--SELECT - the columns or executed functions you want in the result
+--FROM - the table(s) involved
+--INNER JOIN - combining multiple tables
+--WHERE - the conditions or constraints
+--GROUP BY - columns in the SELECT used to aggregate the results
+--ORDER BY - columns by which the results shall be ordered, either numerically or alphabetically
+--LIMIT - number of results to return
