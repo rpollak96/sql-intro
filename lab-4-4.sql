@@ -38,3 +38,36 @@
 -- +-------------------------------+------------+-------------+----------------------+
 
 
+WITH team_hr_totals AS (
+    SELECT
+        t.id AS team_id,
+        t.name AS team_name,
+        p.id AS player_id,
+        p.first_name,
+        p.last_name,
+        SUM(s.home_runs) AS total_home_runs
+    FROM stats s
+    JOIN teams t
+      ON s.team_id = t.id
+    JOIN players p
+      ON s.player_id = p.id
+    WHERE t.year = 2019
+    GROUP BY
+        t.id, t.name, p.id, p.first_name, p.last_name
+),
+ranked_hitters AS (
+    SELECT *,
+           ROW_NUMBER() OVER (
+               PARTITION BY team_id
+               ORDER BY total_home_runs DESC
+           ) AS hr_rank
+    FROM team_hr_totals
+)
+SELECT
+    team_name,
+    first_name,
+    last_name,
+    total_home_runs
+FROM ranked_hitters
+WHERE hr_rank = 1
+ORDER BY team_name;
